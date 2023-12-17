@@ -9,57 +9,80 @@ services:
     volumes:
       - jenkins_home:/var/jenkins_home
 
-  h2o:
-    build:
-      context: ./h2oai
-      dockerfile: Dockerfile
-    ports:
-      - "54321:54321"
-      - "54322:54322"
-      - "54323:54323"
+  # jenkins_api:
+  #   build:
+  #     context: ./jenkins-api
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8181:8181"
+
+  # h2o:
+  #   build:
+  #     context: ./h2oai
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "54321:54321"
+  #     - "54322:54322"
+  #     - "54323:54323"
   
-  supabase:
-    image: supabase/postgres:0.14.0
+  # supabase:
+  #   image: supabase/postgres:0.14.0
+  #   environment:
+  #     POSTGRES_DB: postgres
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_HOST_AUTH_METHOD: trust
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - supabase_data:/var/lib/postgresql/data
+
+  # portainer:
+  #   image: portainer/portainer-ce
+  #   ports:
+  #     - "9000:9000"
+  #   volumes:
+  #     - "/var/run/docker.sock:/var/run/docker.sock"
+
+  # rancher:
+  #   image: rancher/rancher:latest
+  #   restart: always
+  #   ports:
+  #   - "80:80/tcp"
+  #   - "443:443/tcp"
+  #   environment:
+  #     CATTLE_BOOTSTRAP_PASSWORD: testing
+  #   volumes:
+  #   - "rancher-data:/var/lib/rancher"
+  #   privileged: true
+
+  wordpress:
+    image: wordpress:latest
+    ports:
+      - "8000:80"
     environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_HOST_AUTH_METHOD: trust
-    ports:
-      - "5432:5432"
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
     volumes:
-      - supabase_data:/var/lib/postgresql/data
-
-  portainer:
-    image: portainer/portainer-ce
-    ports:
-      - "9000:9000"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-
-  grafana:
-    image: grafana/grafana
-    ports:
-      - "3000:3000"
-
-  rancher:
-    image: rancher/rancher:latest
+      - wordpress_data:/var/www/html
     restart: always
-    ports:
-    - "80:80/tcp"
-    - "443:443/tcp"
-    volumes:
-    - "rancher-data:/var/lib/rancher"
-    privileged: true
 
-  tensorboard:
-    build:
-      context: ./tensorboard
-      dockerfile: Dockerfile
-    ports:
-      - "6006:6006"
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: somewordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
 
 volumes:
   jenkins_home:
-  supabase_data:
-  rancher-data:
+  # supabase_data:
+  # rancher-data:
+  wordpress_data:
+  db_data:
