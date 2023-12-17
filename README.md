@@ -18,12 +18,6 @@ This repository contains a Docker Compose setup for running Jenkins, H2O Flow, S
 - Access WordPress at [http://localhost:8000](http://localhost:8000)
 - WordPress Home: `./wordpress_home`
 
-### Rancher 🐄
-- Rancher is a complete software stack for teams adopting containers.
-
-#### Usage
-- Access Rancher at [http://localhost](http://localhost)
-
 ## Subscribe and Stay Tuned! 🎉
 
 Join our YouTube channel for more tech tutorials and quick hacks!
